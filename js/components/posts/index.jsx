@@ -73,12 +73,12 @@ const Index = React.createClass( {
 		})
 	},
 
-	fetchPosts() {
+	async fetchPosts() {
 
 		this.setState({ fetchOnce: false })
 
 
-		fetch(SiteSettings.endpoint + 'wp-json/wp/v2/posts?sticky=false&page=' + this.state.page + '&_embed=true')
+		await fetch(SiteSettings.endpoint + 'wp-json/wp/v2/posts?sticky=false&page=' + this.state.page + '&_embed=true')
 			.then(response => {
 
 				if (response.status === 400) return []
@@ -112,7 +112,7 @@ const Index = React.createClass( {
 	renderPostList(type) {
 		if (type == 'paged') {
 
-			if ( this.props.posts.length == 0 ) {
+			if ( this.props.posts.length == 0 && !this.props.requesting) {
 				return <NotFound />
 			}
 
